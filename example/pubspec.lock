@@ -72,9 +72,9 @@ packages:
   flutter_selector:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: flutter_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
