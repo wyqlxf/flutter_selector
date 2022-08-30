@@ -141,10 +141,10 @@ class Selector {
       Color? textColorRight,
       Color? lineColor,
       Color? backgroundColor,
-      int positionLeft = 0,
-      int positionRight = 0,
-      required Function(SelectorItem itemLeft, int positionLeft,
-              SelectorItem itemRight, int positionRight)
+      int? positionLeft = 0,
+      int? positionRight = 0,
+      required Function(SelectorItem? itemLeft, int? positionLeft,
+              SelectorItem? itemRight, int? positionRight)
           callBack,
       GestureTapCallback? onTapLeft,
       GestureTapCallback? onTapRight}) {

@@ -6,12 +6,15 @@
 class SelectorItem<T> {
   String _id = '';
   String _name = '';
+  bool _hideNext = false;
   List<SelectorItem>? _childList;
   T? _param;
 
   String get id => _id;
 
   String get name => _name;
+
+  bool get hideNext => _hideNext;
 
   List<SelectorItem>? get childList => _childList;
 
@@ -21,9 +24,11 @@ class SelectorItem<T> {
       {required String id,
       required String name,
       List<SelectorItem>? childList,
+      bool hideNext = false,
       T? param}) {
     _id = id;
     _name = name;
+    _hideNext = hideNext;
     _childList = childList;
     _param = param;
   }

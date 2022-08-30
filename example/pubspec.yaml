@@ -31,11 +31,11 @@ dependencies:
     sdk: flutter
 
   # 联动选择器
-#  flutter_selector:
-#    path: ../
+  flutter_selector:
+    path: ../
   # 联动选择器
   # https://pub.dev/packages/flutter_selector/install
-  flutter_selector: ^0.0.1
+#  flutter_selector: ^0.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -2,7 +2,6 @@
 // Date: 29/08/2022
 // Copyright (c) 2022 W YongQi
 
-import 'package:example/test_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_selector/selector.dart';
 import 'package:flutter_selector/selector_item.dart';
@@ -93,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _singleSelector() {
     Selector.showSingleSelector(context,
-        list: TestData.getSingleData(),
+        list: getSingleData(),
         textColorRight: Colors.black,
         position: _position, callBack: (selectorItem, position) {
       _position = position;
@@ -103,15 +102,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// *************************  双选择器 *************************///
-  int _positionLeft = 0;
+  int? _positionLeft = 0;
   SelectorItem? _selectorItemLeft;
-  int _positionRight = 0;
+  int? _positionRight = 0;
   SelectorItem? _selectorItemRight;
 
   void _doubleSelector() {
+    // 支持隐藏二级项
     Selector.showDoubleSelector(context,
-        listLeft: TestData.getDoubleData()[0],
-        listRight: TestData.getDoubleData()[1],
+        listLeft: getDoubleData()[0],
+        listRight: getDoubleData()[1],
         positionLeft: _positionLeft,
         positionRight: _positionRight, callBack:
             (selectorItemLeft, positionLeft, selectorItemRight, positionRight) {
@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _multipleSelector() {
     Selector.showMultipleSelector(context,
-        list: TestData.getMultipleData(),
+        list: getMultipleData(),
         listPosition: _positions, callBack: (selectorItems, positions) {
       _positions = positions;
       _selectorItems = selectorItems;
@@ -144,11 +144,92 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _multipleLinkSelector() {
     Selector.showMultipleLinkSelector(context,
-        list: TestData.getMultipleLinkData(),
+        list: getMultipleLinkData(),
         listPosition: _positionsLink, callBack: (selectorItems, positions) {
       _positionsLink = positions;
       _selectorItemsLink = selectorItems;
       setState(() {});
     });
+  }
+
+  /// *************************  测试数据 *************************///
+
+  List<SelectorItem> getSingleData() {
+    List<SelectorItem> list = [];
+    for (int i = 0; i < 7; i++) {
+      list.add(SelectorItem(id: '${i + 1}', name: '星期${i + 1}'));
+    }
+    return list;
+  }
+
+  List<List<SelectorItem>> getDoubleData() {
+    List<SelectorItem> list1 = [];
+    for (int i = 0; i < 7; i++) {
+      if (i == 0) {
+        list1.add(
+            SelectorItem(id: '${i + 1}', name: '动物${i + 1}', hideNext: true));
+      } else {
+        list1.add(SelectorItem(id: '${i + 1}', name: '动物${i + 1}'));
+      }
+    }
+    List<SelectorItem> list2 = [];
+    for (int i = 0; i < 7; i++) {
+      list2.add(SelectorItem(id: '${i + 1}', name: '植物${i + 1}'));
+    }
+    return [list1, list2];
+  }
+
+  List<List<SelectorItem>> getMultipleData() {
+    List<SelectorItem> list1 = [];
+    for (int i = 0; i < 7; i++) {
+      list1.add(SelectorItem(id: '${i + 1}', name: '金${i + 1}'));
+    }
+    List<SelectorItem> list2 = [];
+    for (int i = 0; i < 7; i++) {
+      list2.add(SelectorItem(id: '${i + 1}', name: '木${i + 1}'));
+    }
+    List<SelectorItem> list3 = [];
+    for (int i = 0; i < 7; i++) {
+      list3.add(SelectorItem(id: '${i + 1}', name: '水${i + 1}'));
+    }
+    List<SelectorItem> list4 = [];
+    for (int i = 0; i < 7; i++) {
+      list4.add(SelectorItem(id: '${i + 1}', name: '火${i + 1}'));
+    }
+    List<SelectorItem> list5 = [];
+    for (int i = 0; i < 7; i++) {
+      list5.add(SelectorItem(id: '${i + 1}', name: '土${i + 1}'));
+    }
+    return [list1, list2, list3, list4, list5];
+  }
+
+  List<SelectorItem> getMultipleLinkData() {
+    List<SelectorItem> level1 = [];
+    for (int i = 0; i < 7; i++) {
+      List<SelectorItem> level2 = [];
+      for (int j = 0; j < 7; j++) {
+        List<SelectorItem> level3 = [];
+        for (int k = 0; k < 7; k++) {
+          List<SelectorItem> level4 = [];
+          for (int m = 0; m < 7; m++) {
+            SelectorItem selectorItem = SelectorItem(
+                id: '${m + 1}', name: '${i + 1}${j + 1}${k + 1}火${m + 1}');
+            level4.add(selectorItem);
+          }
+          SelectorItem selectorItem = SelectorItem(
+              id: '${k + 1}',
+              name: '${i + 1}${j + 1}水${k + 1}',
+              childList: level4);
+          level3.add(selectorItem);
+        }
+        SelectorItem selectorItem = SelectorItem(
+            id: '${j + 1}', name: '${i + 1}木${j + 1}', childList: level3);
+        level2.add(selectorItem);
+      }
+      SelectorItem selectorItem =
+          SelectorItem(id: '${i + 1}', name: '金${i + 1}', childList: level2);
+      level1.add(selectorItem);
+    }
+    return level1;
   }
 }

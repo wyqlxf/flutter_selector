@@ -23,10 +23,10 @@ class SelectorDoubleWidget extends StatefulWidget {
   final Color textColorRight;
   final Color lineColor;
   final Color backgroundColor;
-  final int positionLeft;
-  final int positionRight;
-  final Function(SelectorItem itemLeft, int positionLeft,
-      SelectorItem itemRight, int positionRight) callBack;
+  final int? positionLeft;
+  final int? positionRight;
+  final Function(SelectorItem? itemLeft, int? positionLeft,
+      SelectorItem? itemRight, int? positionRight) callBack;
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
 
@@ -59,24 +59,33 @@ class SelectorDoubleWidget extends StatefulWidget {
 
 class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
     with CommonWidget {
-  late SelectorItem _selectorItemLeft;
-  late FixedExtentScrollController _controllerLeft;
+  SelectorItem? _selectorItemLeft;
+  FixedExtentScrollController? _controllerLeft;
 
-  late SelectorItem _selectorItemRight;
-  late FixedExtentScrollController _controllerRight;
+  SelectorItem? _selectorItemRight;
+  FixedExtentScrollController? _controllerRight;
+
+  bool _hindNext = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.listLeft.length > widget.positionLeft) {
-      _selectorItemLeft = widget.listLeft[widget.positionLeft];
-      _controllerLeft =
-          FixedExtentScrollController(initialItem: widget.positionLeft);
+    int positionLeft = widget.positionLeft ?? 0;
+    if (widget.listLeft.length > positionLeft) {
+      _selectorItemLeft = widget.listLeft[positionLeft];
+      _controllerLeft = FixedExtentScrollController(initialItem: positionLeft);
+      if (null != _selectorItemLeft) {
+        bool? flag = _selectorItemLeft?.hideNext;
+        if (null != flag) {
+          _hindNext = flag;
+        }
+      }
     }
-    if (widget.listRight.length > widget.positionRight) {
-      _selectorItemRight = widget.listRight[widget.positionRight];
+    int positionRight = widget.positionRight ?? 0;
+    if (widget.listRight.length > positionRight) {
+      _selectorItemRight = widget.listRight[positionRight];
       _controllerRight =
-          FixedExtentScrollController(initialItem: widget.positionRight);
+          FixedExtentScrollController(initialItem: positionRight);
     }
   }
 
@@ -123,11 +132,16 @@ class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
                   ),
                 ),
                 onTap: () {
-                  widget.callBack.call(
-                      _selectorItemLeft,
-                      _controllerLeft.selectedItem,
-                      _selectorItemRight,
-                      _controllerRight.selectedItem);
+                  if (_hindNext) {
+                    widget.callBack.call(_selectorItemLeft,
+                        _controllerLeft?.selectedItem, null, null);
+                  } else {
+                    widget.callBack.call(
+                        _selectorItemLeft,
+                        _controllerLeft?.selectedItem,
+                        _selectorItemRight,
+                        _controllerRight?.selectedItem);
+                  }
                   if (widget.onTapRight != null) {
                     widget.onTapRight!.call();
                   } else {
@@ -156,29 +170,47 @@ class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
                 onSelectedItemChanged: (position) {
                   if (widget.listLeft.length > position) {
                     _selectorItemLeft = widget.listLeft[position];
+                    if (null != _selectorItemLeft) {
+                      bool? flag = _selectorItemLeft?.hideNext;
+                      if (null != flag) {
+                        if (flag) {
+                          if (!_hindNext) {
+                            _hindNext = true;
+                            setState(() {});
+                          }
+                        } else {
+                          if (_hindNext) {
+                            _hindNext = false;
+                            setState(() {});
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 children: getChildren(
                     widget.listLeft, widget.textSize, widget.textColor),
               )),
-              Expanded(
-                  child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                diameterRatio: 1,
-                useMagnifier: true,
-                magnification: 1.2,
-                scrollController: _controllerRight,
-                selectionOverlay: getSelectionOverlayWidget(
-                    0, widget.padding, widget.lineColor),
-                itemExtent: widget.itemExtent,
-                onSelectedItemChanged: (position) {
-                  if (widget.listRight.length > position) {
-                    _selectorItemRight = widget.listRight[position];
-                  }
-                },
-                children: getChildren(
-                    widget.listRight, widget.textSize, widget.textColor),
-              )),
+              Visibility(
+                  visible: !_hindNext,
+                  child: Expanded(
+                      child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    diameterRatio: 1,
+                    useMagnifier: true,
+                    magnification: 1.2,
+                    scrollController: _controllerRight,
+                    selectionOverlay: getSelectionOverlayWidget(
+                        0, widget.padding, widget.lineColor),
+                    itemExtent: widget.itemExtent,
+                    onSelectedItemChanged: (position) {
+                      if (widget.listRight.length > position) {
+                        _selectorItemRight = widget.listRight[position];
+                      }
+                    },
+                    children: getChildren(
+                        widget.listRight, widget.textSize, widget.textColor),
+                  ))),
             ],
           ),
         )
@@ -189,7 +221,7 @@ class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
   @override
   void dispose() {
     super.dispose();
-    _controllerLeft.dispose();
-    _controllerRight.dispose();
+    _controllerLeft?.dispose();
+    _controllerRight?.dispose();
   }
 }
