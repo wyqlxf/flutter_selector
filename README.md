@@ -5,14 +5,18 @@
 
 ## 如何使用FlutterSelector?
 
+### 依赖
+```dart
+dependencies:
+  flutter_selector: ^0.0.3
+```
+### 初始化
 如果你需要自定义选择器的高度、间距、字体颜色等等，并且期望在整个项目中统一，可以初始化自定义参数，否则无需调用
 ```dart
 Selector.init(height: 300, radius: 8, itemExtent: 48, padding: 12, 
         textSize: 14, textLeft: '取消', textRight: '确定', textColor:Colors.black54, 
         textColorLeft:Colors.black26, textColorRight:Colors.black, lineColor: Colors.white24, backgroundColor: Colors.grey);
 ```
-<br>
-
 ### 调用单个选择器
 ```dart
 Selector.showSingleSelector(context, list: list, callBack: (selectorItem, position) {});
