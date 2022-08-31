@@ -48,3 +48,5 @@ Selector.showSingleMultipleChoiceSelector(context, list: list, callBack: (List<S
 ## 效果演示
 ![image](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_img.jpg)
 <br>
+
+视频演示请参阅[VideoDemo](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_video.mp4)
