@@ -49,6 +49,8 @@ Selector.showSingleMultipleChoiceSelector(context, list: list, callBack: (List<S
 ### 其他说明
 字体颜色、字体大小、间距等参数可以通过初始化传参，也可以在每一次调用方法的时候，进行传参，实现单个不同的样式效果。详情参见example
 
+<br>
+
 ## 效果演示
 ![image](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_img.jpg)
 <br>
