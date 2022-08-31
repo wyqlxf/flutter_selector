@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     Selector.init(textColorRight: Colors.blueAccent);
+    _selectorItemsMultipleChoice = getMultipleChoiceData();
   }
 
   @override
@@ -54,16 +55,25 @@ class _MyHomePageState extends State<MyHomePage> {
     for (SelectorItem selectorItem in _selectorItemsLink) {
       _bufferLink.write(selectorItem.toString() + '\n');
     }
+    StringBuffer _bufferMultipleChoice = StringBuffer();
+    for (SelectorItem selectorItem in _selectorItemsMultipleChoice) {
+      if (selectorItem.check) {
+        if (selectorItem.id.isNotEmpty) {
+          _bufferMultipleChoice.write(selectorItem.toString() + '\n');
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 20),
+            SizedBox(width: MediaQuery.of(context).size.width, height: 20),
             TextButton(
                 onPressed: _singleSelector, child: const Text('点击选择器(单)')),
             Text('${_selectorItem ?? ''}'),
@@ -80,6 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _multipleLinkSelector,
                 child: const Text('点击选择器(多，支持联动)')),
             Text(_bufferLink.toString()),
+            const SizedBox(height: 20),
+            TextButton(
+                onPressed: _multipleChoiceSelector,
+                child: const Text('点击选择器(单，条件多选)')),
+            Text(_bufferMultipleChoice.toString()),
           ],
         ),
       ),
@@ -148,6 +163,19 @@ class _MyHomePageState extends State<MyHomePage> {
         listPosition: _positionsLink, callBack: (selectorItems, positions) {
       _positionsLink = positions;
       _selectorItemsLink = selectorItems;
+      setState(() {});
+    });
+  }
+
+  /// *************************  单选择器(条件多选) *************************///
+
+  List<SelectorItem> _selectorItemsMultipleChoice = [];
+
+  void _multipleChoiceSelector() {
+    Selector.showSingleMultipleChoiceSelector(context,
+        list: _selectorItemsMultipleChoice, textColor: const Color(0xFF666666),
+        callBack: (List<SelectorItem> selectorItems) {
+      _selectorItemsMultipleChoice = selectorItems;
       setState(() {});
     });
   }
@@ -231,5 +259,15 @@ class _MyHomePageState extends State<MyHomePage> {
       level1.add(selectorItem);
     }
     return level1;
+  }
+
+  List<SelectorItem> getMultipleChoiceData() {
+    List<SelectorItem> list = [
+      SelectorItem(id: '', name: '全选', isCheck: false, isSupportSelectAll: true)
+    ];
+    for (int i = 0; i < 7; i++) {
+      list.add(SelectorItem(id: '${i + 1}', name: '星期${i + 1}'));
+    }
+    return list;
   }
 }

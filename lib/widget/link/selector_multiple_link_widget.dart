@@ -96,7 +96,9 @@ class _SelectorMultipleWidgetLinkState extends State<SelectorMultipleLinkWidget>
     switch (level) {
       case 0:
         _position0 = position;
-        _selectorItem0 = widget.list[position];
+        if (widget.list.isNotEmpty) {
+          _selectorItem0 = widget.list[position];
+        }
         _controller0 = FixedExtentScrollController(initialItem: position);
         break;
       case 1:

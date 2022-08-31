@@ -20,16 +20,23 @@ class SelectorItem<T> {
 
   T? get param => _param;
 
+  bool check = false;
+  bool supportSelectAll = false;
+
   SelectorItem(
       {required String id,
       required String name,
       List<SelectorItem>? childList,
       bool hideNext = false,
+      bool isCheck = false,
+      bool isSupportSelectAll = false,
       T? param}) {
     _id = id;
     _name = name;
     _hideNext = hideNext;
     _childList = childList;
+    check = isCheck;
+    supportSelectAll = isSupportSelectAll;
     _param = param;
   }
 

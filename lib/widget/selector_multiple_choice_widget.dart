@@ -2,13 +2,12 @@
 // Date: 29/08/2022
 // Copyright (c) 2022 W YongQi
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_selector/selector_item.dart';
 import 'package:flutter_selector/widget/common_widget.dart';
 
-/// 单选择器部件
-class SelectorSingleWidget extends StatefulWidget {
+/// 选择器多选部件
+class SelectorMultipleChoiceWidget extends StatefulWidget {
   final List<SelectorItem> list;
   final double height;
   final double radius;
@@ -22,12 +21,14 @@ class SelectorSingleWidget extends StatefulWidget {
   final Color textColorRight;
   final Color lineColor;
   final Color backgroundColor;
-  final int position;
-  final Function(SelectorItem item, int position) callBack;
+  final double iconWidth;
+  final Color selectColor;
+  final Color unSelectedColor;
+  final Function(List<SelectorItem> list) callBack;
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
 
-  const SelectorSingleWidget(
+  const SelectorMultipleChoiceWidget(
       {Key? key,
       required this.list,
       required this.height,
@@ -42,28 +43,24 @@ class SelectorSingleWidget extends StatefulWidget {
       required this.textColorRight,
       required this.lineColor,
       required this.backgroundColor,
-      required this.position,
       required this.callBack,
+      required this.iconWidth,
+      required this.selectColor,
+      required this.unSelectedColor,
       this.onTapLeft,
       this.onTapRight})
       : super(key: key);
 
   @override
-  _SelectorSingleWidgetState createState() => _SelectorSingleWidgetState();
+  _SelectorMultipleChoiceWidgetState createState() =>
+      _SelectorMultipleChoiceWidgetState();
 }
 
-class _SelectorSingleWidgetState extends State<SelectorSingleWidget>
-    with CommonWidget {
-  SelectorItem _selectorItem = SelectorItem.init();
-  FixedExtentScrollController? _controller;
-
+class _SelectorMultipleChoiceWidgetState
+    extends State<SelectorMultipleChoiceWidget> with CommonWidget {
   @override
   void initState() {
     super.initState();
-    if (widget.list.length > widget.position) {
-      _selectorItem = widget.list[widget.position];
-      _controller = FixedExtentScrollController(initialItem: widget.position);
-    }
   }
 
   @override
@@ -109,11 +106,7 @@ class _SelectorSingleWidgetState extends State<SelectorSingleWidget>
                   ),
                 ),
                 onTap: () {
-                  int position = 0;
-                  if (null != _controller) {
-                    position = _controller!.selectedItem;
-                  }
-                  widget.callBack.call(_selectorItem, position);
+                  widget.callBack.call(widget.list);
                   if (widget.onTapRight != null) {
                     widget.onTapRight!.call();
                   } else {
@@ -127,22 +120,29 @@ class _SelectorSingleWidgetState extends State<SelectorSingleWidget>
         Container(
           color: Colors.white,
           height: widget.height,
-          child: CupertinoPicker(
-            backgroundColor: Colors.white,
-            diameterRatio: 1,
-            useMagnifier: true,
-            magnification: 1.2,
-            scrollController: _controller,
-            selectionOverlay: getSelectionOverlayWidget(
-                widget.padding, widget.padding, widget.lineColor),
+          child: ListView(
+            shrinkWrap: true,
             itemExtent: widget.itemExtent,
-            onSelectedItemChanged: (position) {
-              if (widget.list.length > position) {
-                _selectorItem = widget.list[position];
+            children: getChildrenChoice(
+                widget.list,
+                widget.textSize,
+                widget.padding,
+                widget.textColor,
+                widget.lineColor,
+                widget.selectColor,
+                widget.unSelectedColor,
+                widget.iconWidth,
+                callBack: (SelectorItem selectorItem, int position) {
+              bool check = !selectorItem.check;
+              if (selectorItem.supportSelectAll) {
+                for (int i = 0; i < widget.list.length; i++) {
+                  widget.list[i].check = check;
+                }
+              } else {
+                widget.list[position].check = check;
               }
-            },
-            children:
-                getChildren(widget.list, widget.textSize, widget.textColor),
+              setState(() {});
+            }),
           ),
         )
       ],
@@ -152,6 +152,5 @@ class _SelectorSingleWidgetState extends State<SelectorSingleWidget>
   @override
   void dispose() {
     super.dispose();
-    _controller?.dispose();
   }
 }

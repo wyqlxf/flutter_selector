@@ -43,4 +43,65 @@ class CommonWidget {
       ),
     );
   }
+
+  /// 列表Item
+  List<Widget> getChildrenChoice(
+      List<SelectorItem> list,
+      double textSize,
+      double padding,
+      Color textColor,
+      Color lineColor,
+      Color selectColor,
+      Color unSelectedColor,
+      double iconWidth,
+      {String assetName = '',
+      Function(SelectorItem selectorItem, int position)? callBack}) {
+    List<Widget> children = [];
+    for (int i = 0; i < list.length; i++) {
+      SelectorItem item = list[i];
+      Widget widget = InkWell(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    item.name,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: textSize, color: textColor),
+                  ),
+                  assetName.isNotEmpty
+                      ? Image(
+                          fit: BoxFit.fitWidth,
+                          width: iconWidth,
+                          alignment: Alignment.center,
+                          color: item.check ? selectColor : unSelectedColor,
+                          image: AssetImage(assetName))
+                      : Icon(Icons.check_circle,
+                          color: item.check ? selectColor : unSelectedColor)
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Divider(
+                  height: 1,
+                  color: lineColor,
+                ),
+              )
+            ],
+          ),
+        ),
+        onTap: () {
+          callBack?.call(item, i);
+        },
+      );
+      children.add(widget);
+    }
+    return children;
+  }
 }

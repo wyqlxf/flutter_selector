@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_selector/selector_item.dart';
 import 'package:flutter_selector/widget/link/selector_multiple_link_widget.dart';
 import 'package:flutter_selector/widget/selector_double_widget.dart';
+import 'package:flutter_selector/widget/selector_multiple_choice_widget.dart';
 import 'package:flutter_selector/widget/selector_multiple_widget.dart';
 import 'package:flutter_selector/widget/selector_single_widget.dart';
 
@@ -277,6 +278,60 @@ class Selector {
               lineColor: lineColor ?? _lineColor,
               backgroundColor: backgroundColor ?? _backgroundColor,
               listPosition: listPosition,
+              callBack: callBack,
+              onTapLeft: onTapLeft,
+              onTapRight: onTapRight);
+        });
+  }
+
+  /// 显示单个选择器（支持多选）
+  static showSingleMultipleChoiceSelector(BuildContext context,
+      {required List<SelectorItem> list,
+      double? height,
+      double? radius,
+      double? itemExtent,
+      double? padding,
+      double? textSize,
+      String? textLeft,
+      String? textRight,
+      Color? textColor,
+      Color? textColorLeft,
+      Color? textColorRight,
+      Color? lineColor,
+      Color? backgroundColor,
+      double iconWidth = 24,
+      Color selectColor = const Color(0xFFFF8000),
+      Color unSelectedColor = const Color(0xFF999999),
+      required Function(List<SelectorItem> selectorItems) callBack,
+      GestureTapCallback? onTapLeft,
+      GestureTapCallback? onTapRight}) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: false,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(radius ?? _radius),
+          topRight: Radius.circular(radius ?? _radius),
+        )),
+        builder: (BuildContext context) {
+          return SelectorMultipleChoiceWidget(
+              list: list,
+              height: height ?? _height,
+              radius: radius ?? _radius,
+              itemExtent: itemExtent ?? _itemExtent,
+              padding: padding ?? _padding,
+              textSize: textSize ?? _textSize,
+              textLeft: textLeft ?? _textLeft,
+              textRight: textRight ?? _textRight,
+              textColor: textColor ?? _textColor,
+              textColorLeft: textColorLeft ?? _textColorLeft,
+              textColorRight: textColorRight ?? _textColorRight,
+              lineColor: lineColor ?? _lineColor,
+              backgroundColor: backgroundColor ?? _backgroundColor,
+              selectColor: selectColor,
+              unSelectedColor: unSelectedColor,
+              iconWidth: iconWidth,
               callBack: callBack,
               onTapLeft: onTapLeft,
               onTapRight: onTapRight);
