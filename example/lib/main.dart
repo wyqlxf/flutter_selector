@@ -173,7 +173,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _multipleChoiceSelector() {
     Selector.showSingleMultipleChoiceSelector(context,
-        list: _selectorItemsMultipleChoice, textColor: const Color(0xFF666666),
+        list: _selectorItemsMultipleChoice,
+        textColor: const Color(0xFF666666),
+        selectColor: Colors.lightBlueAccent,
         callBack: (List<SelectorItem> selectorItems) {
       _selectorItemsMultipleChoice = selectorItems;
       setState(() {});
