@@ -24,6 +24,7 @@ class SelectorMultipleChoiceWidget extends StatefulWidget {
   final double iconWidth;
   final Color selectColor;
   final Color unSelectedColor;
+  final String iconAssetName;
   final Function(List<SelectorItem> list) callBack;
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
@@ -47,6 +48,7 @@ class SelectorMultipleChoiceWidget extends StatefulWidget {
       required this.iconWidth,
       required this.selectColor,
       required this.unSelectedColor,
+      this.iconAssetName = '',
       this.onTapLeft,
       this.onTapRight})
       : super(key: key);
@@ -58,9 +60,22 @@ class SelectorMultipleChoiceWidget extends StatefulWidget {
 
 class _SelectorMultipleChoiceWidgetState
     extends State<SelectorMultipleChoiceWidget> with CommonWidget {
+  List<SelectorItem> list = [];
+
   @override
   void initState() {
     super.initState();
+    for (int i = 0; i < widget.list.length; i++) {
+      SelectorItem selectorItem = widget.list[i];
+      list.add(SelectorItem(
+          id: selectorItem.id,
+          name: selectorItem.name,
+          isCheck: selectorItem.check,
+          isSupportSelectAll: selectorItem.supportSelectAll,
+          param: selectorItem.param,
+          hideNext: selectorItem.hideNext,
+          childList: selectorItem.childList));
+    }
   }
 
   @override
@@ -106,7 +121,7 @@ class _SelectorMultipleChoiceWidgetState
                   ),
                 ),
                 onTap: () {
-                  widget.callBack.call(widget.list);
+                  widget.callBack.call(list);
                   if (widget.onTapRight != null) {
                     widget.onTapRight!.call();
                   } else {
@@ -124,7 +139,7 @@ class _SelectorMultipleChoiceWidgetState
             shrinkWrap: true,
             itemExtent: widget.itemExtent,
             children: getChildrenChoice(
-                widget.list,
+                list,
                 widget.textSize,
                 widget.padding,
                 widget.textColor,
@@ -132,14 +147,15 @@ class _SelectorMultipleChoiceWidgetState
                 widget.selectColor,
                 widget.unSelectedColor,
                 widget.iconWidth,
+                iconAssetName: widget.iconAssetName,
                 callBack: (SelectorItem selectorItem, int position) {
               bool check = !selectorItem.check;
               if (selectorItem.supportSelectAll) {
-                for (int i = 0; i < widget.list.length; i++) {
-                  widget.list[i].check = check;
+                for (int i = 0; i < list.length; i++) {
+                  list[i].check = check;
                 }
               } else {
-                widget.list[position].check = check;
+                list[position].check = check;
               }
               setState(() {});
             }),

@@ -54,7 +54,7 @@ class CommonWidget {
       Color selectColor,
       Color unSelectedColor,
       double iconWidth,
-      {String assetName = '',
+      {String iconAssetName = '',
       Function(SelectorItem selectorItem, int position)? callBack}) {
     List<Widget> children = [];
     for (int i = 0; i < list.length; i++) {
@@ -75,13 +75,13 @@ class CommonWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: textSize, color: textColor),
                   ),
-                  assetName.isNotEmpty
+                  iconAssetName.isNotEmpty
                       ? Image(
                           fit: BoxFit.fitWidth,
                           width: iconWidth,
                           alignment: Alignment.center,
                           color: item.check ? selectColor : unSelectedColor,
-                          image: AssetImage(assetName))
+                          image: AssetImage(iconAssetName))
                       : Icon(Icons.check_circle,
                           color: item.check ? selectColor : unSelectedColor)
                 ],
