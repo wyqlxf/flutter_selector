@@ -1,6 +1,6 @@
 name: flutter_selector
 description: This is a selector that supports linkage. you can use it very quickly
-version: 0.0.5
+version: 1.0.0
 homepage: https://github.com/wyqlxf/flutter_selector
 
 environment:
