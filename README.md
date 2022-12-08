@@ -8,7 +8,7 @@
 ### 依赖
 ```dart
 dependencies:
-  flutter_selector: ^0.0.4
+  flutter_selector: ^0.0.5
 ```
 ### 初始化
 如果你需要自定义选择器的高度、间距、字体颜色等等，并且期望在整个项目中统一，可以初始化自定义参数，否则无需调用
