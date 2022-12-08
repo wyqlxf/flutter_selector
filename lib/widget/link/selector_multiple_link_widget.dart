@@ -28,6 +28,12 @@ class SelectorMultipleLinkWidget extends StatefulWidget {
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
 
+  final double? diameterRatio;
+  final double? offAxisFraction;
+  final double? magnification;
+  final double? squeeze;
+  final Widget? selectionOverlay;
+
   const SelectorMultipleLinkWidget(
       {Key? key,
       required this.list,
@@ -45,6 +51,11 @@ class SelectorMultipleLinkWidget extends StatefulWidget {
       required this.backgroundColor,
       required this.listPosition,
       required this.callBack,
+      this.diameterRatio,
+      this.offAxisFraction,
+      this.magnification,
+      this.squeeze,
+      this.selectionOverlay,
       this.onTapLeft,
       this.onTapRight})
       : super(key: key);
@@ -163,14 +174,17 @@ class _SelectorMultipleWidgetLinkState extends State<SelectorMultipleLinkWidget>
         children.add(Expanded(
             child: CupertinoPicker(
           backgroundColor: Colors.white,
-          diameterRatio: 1,
           useMagnifier: true,
-          magnification: 1.2,
           scrollController: controller,
-          selectionOverlay: getSelectionOverlayWidget(
-              index == 0 ? widget.padding : 0,
-              index == (widget.list.length - 1) ? widget.padding : 0,
-              widget.lineColor),
+          diameterRatio: widget.diameterRatio ?? 1,
+          offAxisFraction: widget.offAxisFraction ?? 0.0,
+          magnification: widget.magnification ?? 1.2,
+          squeeze: widget.squeeze ?? 1.45,
+          selectionOverlay: widget.selectionOverlay ??
+              getSelectionOverlayWidget(
+                  index == 0 ? widget.padding : 0,
+                  index == (widget.list.length - 1) ? widget.padding : 0,
+                  widget.lineColor),
           itemExtent: widget.itemExtent,
           onSelectedItemChanged: (position) {
             for (int i = 0; i < 4; i++) {

@@ -48,20 +48,37 @@ class Selector {
   // 选择器顶部的背景颜色
   static Color _backgroundColor = const Color(0xFFE0E0E0);
 
+  // 直径比，控制子widget上下偏移
+  static double? _diameterRatio;
+
+  // 轴偏移，控制子widget左右偏移
+  static double? _offAxisFraction;
+
+  // 放大镜倍数
+  static double? _magnification;
+
+  // 挤压，控制子widget上下偏移
+  static double? _squeeze;
+
   /// 初始化默认值，提供可自定义的参数(可选项)
-  static init(
-      {double height = 240,
-      double radius = 6,
-      double itemExtent = 48,
-      double padding = 16,
-      double textSize = 16,
-      String textLeft = '取消',
-      String textRight = '完成',
-      Color textColor = const Color(0xFF333333),
-      Color textColorLeft = const Color(0xFF808080),
-      Color textColorRight = const Color(0xFFFF8000),
-      Color lineColor = const Color(0xFFEBEBEB),
-      Color backgroundColor = const Color(0xFFE0E0E0)}) {
+  static init({
+    double height = 240,
+    double radius = 6,
+    double itemExtent = 48,
+    double padding = 16,
+    double textSize = 16,
+    String textLeft = '取消',
+    String textRight = '完成',
+    Color textColor = const Color(0xFF333333),
+    Color textColorLeft = const Color(0xFF808080),
+    Color textColorRight = const Color(0xFFFF8000),
+    Color lineColor = const Color(0xFFEBEBEB),
+    Color backgroundColor = const Color(0xFFE0E0E0),
+    double? diameterRatio,
+    double? offAxisFraction,
+    double? magnification,
+    double? squeeze,
+  }) {
     _height = height;
     _radius = radius;
     _itemExtent = itemExtent;
@@ -74,6 +91,10 @@ class Selector {
     _textColorRight = textColorRight;
     _lineColor = lineColor;
     _backgroundColor = backgroundColor;
+    _diameterRatio = diameterRatio;
+    _offAxisFraction = offAxisFraction;
+    _magnification = magnification;
+    _squeeze = squeeze;
   }
 
   /// 显示单个选择器
@@ -92,6 +113,11 @@ class Selector {
       Color? lineColor,
       Color? backgroundColor,
       int position = 0,
+      double? diameterRatio,
+      double? offAxisFraction,
+      double? magnification,
+      double? squeeze,
+      Widget? selectionOverlay,
       required Function(SelectorItem item, int position) callBack,
       GestureTapCallback? onTapLeft,
       GestureTapCallback? onTapRight}) {
@@ -120,6 +146,11 @@ class Selector {
               lineColor: lineColor ?? _lineColor,
               backgroundColor: backgroundColor ?? _backgroundColor,
               position: position,
+              diameterRatio: _diameterRatio ?? diameterRatio,
+              offAxisFraction: _offAxisFraction ?? offAxisFraction,
+              magnification: _magnification ?? magnification,
+              squeeze: _squeeze ?? squeeze,
+              selectionOverlay: selectionOverlay,
               callBack: callBack,
               onTapLeft: onTapLeft,
               onTapRight: onTapRight);
@@ -144,6 +175,11 @@ class Selector {
       Color? backgroundColor,
       int? positionLeft = 0,
       int? positionRight = 0,
+      double? diameterRatio,
+      double? offAxisFraction,
+      double? magnification,
+      double? squeeze,
+      Widget? selectionOverlay,
       required Function(SelectorItem? itemLeft, int? positionLeft,
               SelectorItem? itemRight, int? positionRight)
           callBack,
@@ -176,6 +212,11 @@ class Selector {
               backgroundColor: backgroundColor ?? _backgroundColor,
               positionLeft: positionLeft,
               positionRight: positionRight,
+              diameterRatio: _diameterRatio ?? diameterRatio,
+              offAxisFraction: _offAxisFraction ?? offAxisFraction,
+              magnification: _magnification ?? magnification,
+              squeeze: _squeeze ?? squeeze,
+              selectionOverlay: selectionOverlay,
               callBack: callBack,
               onTapLeft: onTapLeft,
               onTapRight: onTapRight);
@@ -197,6 +238,11 @@ class Selector {
       Color? textColorRight,
       Color? lineColor,
       Color? backgroundColor,
+      double? diameterRatio,
+      double? offAxisFraction,
+      double? magnification,
+      double? squeeze,
+      Widget? selectionOverlay,
       required List<int> listPosition,
       required Function(List<SelectorItem> selectorItems, List<int> positions)
           callBack,
@@ -227,6 +273,11 @@ class Selector {
               lineColor: lineColor ?? _lineColor,
               backgroundColor: backgroundColor ?? _backgroundColor,
               listPosition: listPosition,
+              diameterRatio: _diameterRatio ?? diameterRatio,
+              offAxisFraction: _offAxisFraction ?? offAxisFraction,
+              magnification: _magnification ?? magnification,
+              squeeze: _squeeze ?? squeeze,
+              selectionOverlay: selectionOverlay,
               callBack: callBack,
               onTapLeft: onTapLeft,
               onTapRight: onTapRight);
@@ -248,6 +299,11 @@ class Selector {
       Color? textColorRight,
       Color? lineColor,
       Color? backgroundColor,
+      double? diameterRatio,
+      double? offAxisFraction,
+      double? magnification,
+      double? squeeze,
+      Widget? selectionOverlay,
       required List<int> listPosition,
       required Function(List<SelectorItem> selectorItems, List<int> positions)
           callBack,
@@ -278,6 +334,11 @@ class Selector {
               lineColor: lineColor ?? _lineColor,
               backgroundColor: backgroundColor ?? _backgroundColor,
               listPosition: listPosition,
+              diameterRatio: _diameterRatio ?? diameterRatio,
+              offAxisFraction: _offAxisFraction ?? offAxisFraction,
+              magnification: _magnification ?? magnification,
+              squeeze: _squeeze ?? squeeze,
+              selectionOverlay: selectionOverlay,
               callBack: callBack,
               onTapLeft: onTapLeft,
               onTapRight: onTapRight);

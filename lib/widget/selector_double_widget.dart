@@ -30,6 +30,12 @@ class SelectorDoubleWidget extends StatefulWidget {
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
 
+  final double? diameterRatio;
+  final double? offAxisFraction;
+  final double? magnification;
+  final double? squeeze;
+  final Widget? selectionOverlay;
+
   const SelectorDoubleWidget(
       {Key? key,
       required this.listLeft,
@@ -49,6 +55,11 @@ class SelectorDoubleWidget extends StatefulWidget {
       required this.positionLeft,
       required this.positionRight,
       required this.callBack,
+      this.diameterRatio,
+      this.offAxisFraction,
+      this.magnification,
+      this.squeeze,
+      this.selectionOverlay,
       this.onTapLeft,
       this.onTapRight})
       : super(key: key);
@@ -160,12 +171,15 @@ class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
               Expanded(
                   child: CupertinoPicker(
                 backgroundColor: Colors.white,
-                diameterRatio: 1,
                 useMagnifier: true,
-                magnification: 1.2,
                 scrollController: _controllerLeft,
-                selectionOverlay: getSelectionOverlayWidget(
-                    widget.padding, 0, widget.lineColor),
+                diameterRatio: widget.diameterRatio ?? 1,
+                offAxisFraction: widget.offAxisFraction ?? 0.0,
+                magnification: widget.magnification ?? 1.2,
+                squeeze: widget.squeeze ?? 1.45,
+                selectionOverlay: widget.selectionOverlay ??
+                    getSelectionOverlayWidget(
+                        widget.padding, 0, widget.lineColor),
                 itemExtent: widget.itemExtent,
                 onSelectedItemChanged: (position) {
                   if (widget.listLeft.length > position) {
@@ -196,12 +210,15 @@ class _SelectorDoubleWidgetState extends State<SelectorDoubleWidget>
                   child: Expanded(
                       child: CupertinoPicker(
                     backgroundColor: Colors.white,
-                    diameterRatio: 1,
                     useMagnifier: true,
-                    magnification: 1.2,
                     scrollController: _controllerRight,
-                    selectionOverlay: getSelectionOverlayWidget(
-                        0, widget.padding, widget.lineColor),
+                    diameterRatio: widget.diameterRatio ?? 1,
+                    offAxisFraction: widget.offAxisFraction ?? 0.0,
+                    magnification: widget.magnification ?? 1.2,
+                    squeeze: widget.squeeze ?? 1.45,
+                    selectionOverlay: widget.selectionOverlay ??
+                        getSelectionOverlayWidget(
+                            0, widget.padding, widget.lineColor),
                     itemExtent: widget.itemExtent,
                     onSelectedItemChanged: (position) {
                       if (widget.listRight.length > position) {
