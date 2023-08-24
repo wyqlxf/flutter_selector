@@ -25,6 +25,8 @@ class SelectorMultipleChoiceWidget extends StatefulWidget {
   final Color selectColor;
   final Color unSelectedColor;
   final String iconAssetName;
+  final double? describeSize;
+  final Color? describeColor;
   final Function(List<SelectorItem> list) callBack;
   final GestureTapCallback? onTapLeft;
   final GestureTapCallback? onTapRight;
@@ -49,6 +51,8 @@ class SelectorMultipleChoiceWidget extends StatefulWidget {
       required this.selectColor,
       required this.unSelectedColor,
       this.iconAssetName = '',
+      this.describeSize,
+      this.describeColor,
       this.onTapLeft,
       this.onTapRight})
       : super(key: key);
@@ -74,6 +78,7 @@ class _SelectorMultipleChoiceWidgetState
           isSupportSelectAll: selectorItem.supportSelectAll,
           param: selectorItem.param,
           hideNext: selectorItem.hideNext,
+          describe: selectorItem.describe,
           childList: selectorItem.childList));
     }
   }
@@ -139,26 +144,29 @@ class _SelectorMultipleChoiceWidgetState
             shrinkWrap: true,
             itemExtent: widget.itemExtent,
             children: getChildrenChoice(
-                list,
-                widget.textSize,
-                widget.padding,
-                widget.textColor,
-                widget.lineColor,
-                widget.selectColor,
-                widget.unSelectedColor,
-                widget.iconWidth,
-                iconAssetName: widget.iconAssetName,
-                callBack: (SelectorItem selectorItem, int position) {
-              bool check = !selectorItem.check;
-              if (selectorItem.supportSelectAll) {
-                for (int i = 0; i < list.length; i++) {
-                  list[i].check = check;
+              list,
+              widget.textSize,
+              widget.padding,
+              widget.textColor,
+              widget.lineColor,
+              widget.selectColor,
+              widget.unSelectedColor,
+              widget.iconWidth,
+              iconAssetName: widget.iconAssetName,
+              describeSize: widget.describeSize,
+              describeColor: widget.describeColor,
+              callBack: (SelectorItem selectorItem, int position) {
+                bool check = !selectorItem.check;
+                if (selectorItem.supportSelectAll) {
+                  for (int i = 0; i < list.length; i++) {
+                    list[i].check = check;
+                  }
+                } else {
+                  list[position].check = check;
                 }
-              } else {
-                list[position].check = check;
-              }
-              setState(() {});
-            }),
+                setState(() {});
+              },
+            ),
           ),
         )
       ],

@@ -364,6 +364,8 @@ class Selector {
       Color selectColor = const Color(0xFFFF8000),
       Color unSelectedColor = const Color(0xFF999999),
       String iconAssetName = '',
+      final double? describeSize,
+      final Color? describeColor,
       required Function(List<SelectorItem> selectorItems) callBack,
       GestureTapCallback? onTapLeft,
       GestureTapCallback? onTapRight}) {
@@ -393,6 +395,8 @@ class Selector {
               backgroundColor: backgroundColor ?? _backgroundColor,
               selectColor: selectColor,
               unSelectedColor: unSelectedColor,
+              describeSize: describeSize,
+              describeColor: describeColor,
               iconWidth: iconWidth,
               iconAssetName: iconAssetName,
               callBack: callBack,

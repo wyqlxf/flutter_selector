@@ -55,6 +55,8 @@ class CommonWidget {
       Color unSelectedColor,
       double iconWidth,
       {String iconAssetName = '',
+      double? describeSize,
+      Color? describeColor,
       Function(SelectorItem selectorItem, int position)? callBack}) {
     List<Widget> children = [];
     for (int i = 0; i < list.length; i++) {
@@ -62,37 +64,54 @@ class CommonWidget {
       Widget widget = InkWell(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Stack(
-            alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    item.name,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: textSize, color: textColor),
-                  ),
-                  iconAssetName.isNotEmpty
-                      ? Image(
-                          fit: BoxFit.fitWidth,
-                          width: iconWidth,
-                          alignment: Alignment.center,
-                          color: item.check ? selectColor : unSelectedColor,
-                          image: AssetImage(iconAssetName))
-                      : Icon(Icons.check_circle,
-                          color: item.check ? selectColor : unSelectedColor)
-                ],
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              TextStyle(fontSize: textSize, color: textColor),
+                        ),
+                        Text(
+                          item.describe,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: describeSize ?? textSize,
+                              color: describeColor ?? textColor),
+                        ),
+                      ],
+                    ),
+                    iconAssetName.isNotEmpty
+                        ? Image(
+                            fit: BoxFit.fitWidth,
+                            width: iconWidth,
+                            alignment: Alignment.center,
+                            color: item.check ? selectColor : unSelectedColor,
+                            image: AssetImage(iconAssetName))
+                        : Icon(Icons.check_circle,
+                            color: item.check ? selectColor : unSelectedColor)
+                  ],
+                ),
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Divider(
+              if (i < list.length - 1)
+                Divider(
                   height: 1,
                   color: lineColor,
-                ),
-              )
+                )
             ],
           ),
         ),

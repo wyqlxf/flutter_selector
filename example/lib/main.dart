@@ -176,7 +176,8 @@ class _MyHomePageState extends State<MyHomePage> {
         list: _selectorItemsMultipleChoice,
         textColor: const Color(0xFF666666),
         selectColor: Colors.lightBlueAccent,
-        callBack: (List<SelectorItem> selectorItems) {
+        describeColor: const Color(0xFF999999),
+        describeSize: 12, callBack: (List<SelectorItem> selectorItems) {
       _selectorItemsMultipleChoice = selectorItems;
       setState(() {});
     });
@@ -265,10 +266,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<SelectorItem> getMultipleChoiceData() {
     List<SelectorItem> list = [
-      SelectorItem(id: '', name: '全选', isCheck: false, isSupportSelectAll: true)
+      SelectorItem(
+          id: '',
+          name: '全选',
+          isCheck: false,
+          isSupportSelectAll: true,
+          describe: '这是一条描述文案')
     ];
     for (int i = 0; i < 7; i++) {
-      list.add(SelectorItem(id: '${i + 1}', name: '星期${i + 1}'));
+      list.add(SelectorItem(
+          id: '${i + 1}', name: '星期${i + 1}', describe: '这是一条描述文案'));
     }
     return list;
   }
