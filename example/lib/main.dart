@@ -270,8 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
           id: '',
           name: '全选',
           isCheck: false,
-          isSupportSelectAll: true,
-          describe: '这是一条描述文案')
+          isSupportSelectAll: true)
     ];
     for (int i = 0; i < 7; i++) {
       list.add(SelectorItem(

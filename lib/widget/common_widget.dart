@@ -74,6 +74,7 @@ class CommonWidget {
                   children: [
                     Column(
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -84,15 +85,16 @@ class CommonWidget {
                           style:
                               TextStyle(fontSize: textSize, color: textColor),
                         ),
-                        Text(
-                          item.describe,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: describeSize ?? textSize,
-                              color: describeColor ?? textColor),
-                        ),
+                        if (item.describe.isNotEmpty)
+                          Text(
+                            item.describe,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: describeSize ?? textSize,
+                                color: describeColor ?? textColor),
+                          ),
                       ],
                     ),
                     iconAssetName.isNotEmpty
