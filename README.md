@@ -1,17 +1,34 @@
-## FlutterSelector是什么？
-一个支持非联动和多级联动底部弹窗选择器
+## FlutterSelector
+支持自定义样式的多级联动底部弹窗列表选择器
 
-<br>
+## 功能介绍
 
-## 如何使用FlutterSelector?
+* 支持自定义UI样式
+* 支持单个列表选择器
+* 支持多个列表选择器
+* 支持多个列表选择器联动
+* 支持单个列表选择器多选
 
-### 依赖
-```dart
+## Demo演示
+
+视频演示请参阅[VideoDemo](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_video.mp4)
+
+
+## 安装
+在 `pubspec.yaml` 中添加依赖：
+```yaml
 dependencies:
   flutter_selector: ^1.0.2
 ```
+
+在终端中运行：
+
+```bash
+$ flutter packages get
+```
+
+## 使用
 ### 初始化
-如果你需要自定义选择器的高度、间距、字体颜色等等，并且期望在整个项目中统一，可以初始化自定义参数，否则无需调用
 ```dart
 Selector.init(height: 300, radius: 8, itemExtent: 48, padding: 12, 
         textSize: 14, textLeft: '取消', textRight: '确定', textColor:Colors.black54, 
@@ -44,15 +61,3 @@ Selector.showMultipleLinkSelector(context, list: list, listPosition: _positionsL
 ```dart
 Selector.showSingleMultipleChoiceSelector(context, list: list, callBack: (List<SelectorItem> selectorItems) {});
 ```
-<br>
-
-### 其他说明
-字体颜色、字体大小、间距等参数可以通过初始化传参，也可以在每一次调用方法的时候，进行传参，实现单个不同的样式效果。详情参见example
-
-<br>
-
-## 效果演示
-![image](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_img.jpg)
-<br>
-
-视频演示请参阅[VideoDemo](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_video.mp4)
