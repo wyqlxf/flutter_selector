@@ -1,63 +1,107 @@
-## FlutterSelector
-支持自定义样式的多级联动底部弹窗列表选择器
+# flutter_selector
+<a href="https://pub.dev/packages/flutter_selector">
+  <img src="https://img.shields.io/badge/Pub-v1.0.3-blue" alt="Pub Version"/>
+</a> &nbsp
+<a href="https://opensource.org/licenses/MIT">
+  <img src="https://img.shields.io/badge/License-MIT-red" alt="License: MIT"/>
+</a> &nbsp 
+<a name="Wiqwj"></a>
 
-## 功能介绍
+Language: English | [简体中文](https://github.com/wyqlxf/flutter_selector/blob/master/README_ZH.md)
 
-* 支持自定义UI样式
-* 支持单个列表选择器
-* 支持多个列表选择器
-* 支持多个列表选择器联动
-* 支持单个列表选择器多选
+# Intro
+This is a customizable Flutter selector that allows you to customize the interface style, support single selection, multiple selection, and even linked selection between multiple lists.
+<a name="Aug4A"></a>
+# Features
 
-## Demo演示
+- Support custom UI styles
+- Support single list selector
+- Support multiple list selectors
+- Support linked selection between multiple list selectors
+- Support multiple selection in single list selector
+<a name="LIviQ"></a>
+# Preview
+![Preview](https://github.com/wyqlxf/flutter_selector/blob/master/preview_images/selector.gif)
 
-视频演示请参阅[VideoDemo](https://github.com/wyqlxf/flutter_selector/blob/master/example/effects/demo_video.mp4)
-
-
-## 安装
-在 `pubspec.yaml` 中添加依赖：
-```yaml
-dependencies:
-  flutter_selector: ^1.0.2
+<a name="rGKbd"></a>
+# Get started
+<a name="Iywln"></a>
+## Install
+Add the flutter_drop_menu package to your [pubspec dependencies](https://pub.dev/packages/flutter_selector).
+<a name="FF3he"></a>
+## Usage
+<a name="u5Vfp"></a>
+### Initialize
+```
+Selector.init(
+        height: 300,
+        radius: 8,
+        itemExtent: 48,
+        padding: 12,
+        textSize: 14,
+        textLeft: '取消',
+        textRight: '确定',
+        textColor: Colors.black54,
+        textColorLeft: Colors.black26,
+        textColorRight: Colors.black,
+        lineColor: Colors.white24,
+        backgroundColor: Colors.grey);
+```
+<a name="XIhgL"></a>
+### Call selector (single)
+```
+Selector.showSingleSelector(context,
+        list: list, callBack: (selectorItem, position) {});
+```
+<a name="cCWAE"></a>
+### Call selector (double)
+```
+Selector.showDoubleSelector(context,
+        listLeft: listLeft,
+        listRight: listRight,
+        callBack: (selectorItemLeft, positionLeft, selectorItemRight,
+            positionRight) {});
+```
+<a name="UKXLE"></a>
+### Call selector (multiple)
+```
+Selector.showMultipleSelector(context,
+        list: list,
+        listPosition: _positions,
+        callBack: (selectorItems, positions) {});
+```
+<a name="jGl7Q"></a>
+### Call selector (multiple with linked selection)
+```
+Selector.showMultipleLinkSelector(context,
+        list: list,
+        listPosition: _positionsLink,
+        callBack: (selectorItems, positions) {});
+```
+<a name="gTtt5"></a>
+### Call selector (support multiple selection)
+```
+Selector.showSingleMultipleChoiceSelector(context,
+        list: list, callBack: (List<SelectorItem> selectorItems) {});
 ```
 
-在终端中运行：
+# License
+The MIT License (MIT) Copyright (c) 2022 WangYongQi
 
-```bash
-$ flutter packages get
-```
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## 使用
-### 初始化
-```dart
-Selector.init(height: 300, radius: 8, itemExtent: 48, padding: 12, 
-        textSize: 14, textLeft: '取消', textRight: '确定', textColor:Colors.black54, 
-        textColorLeft:Colors.black26, textColorRight:Colors.black, lineColor: Colors.white24, backgroundColor: Colors.grey);
-```
-### 调用单个选择器
-```dart
-Selector.showSingleSelector(context, list: list, callBack: (selectorItem, position) {});
-```
-### 调用双个选择器
-```dart
-Selector.showDoubleSelector(context, listLeft: listLeft, listRight: listRight, 
-    callBack: (selectorItemLeft, positionLeft, selectorItemRight, positionRight) {
-  
-    });
-```
-### 调用多个选择器
-```dart
-Selector.showMultipleSelector(context, list: list, listPosition: _positions, callBack: (selectorItems, positions) {});
-```
-<br>
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-### 调用多个选择器(支持联动)
-```dart
-Selector.showMultipleLinkSelector(context, list: list, listPosition: _positionsLink, callBack: (selectorItems, positions) {});
-```
-<br>
-
-### 调用单个选择器（支持多选）
-```dart
-Selector.showSingleMultipleChoiceSelector(context, list: list, callBack: (List<SelectorItem> selectorItems) {});
-```
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

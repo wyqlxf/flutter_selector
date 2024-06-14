@@ -3,8 +3,7 @@
 // Copyright (c) 2022 W YongQi
 
 import 'package:flutter/material.dart';
-import 'package:flutter_selector/selector.dart';
-import 'package:flutter_selector/selector_item.dart';
+import 'package:flutter_selector/flutter_selector.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,11 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '选择器',
+      title: 'flutter_selector',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: '选择器页面'),
+      home: const MyHomePage(title: 'flutter_selector'),
     );
   }
 }
@@ -40,68 +39,91 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Selector.init(textColorRight: Colors.blueAccent);
     _selectorItemsMultipleChoice = getMultipleChoiceData();
+
+
   }
 
   @override
   Widget build(BuildContext context) {
-    /// 支持联动和非联动的选择器
-    /// 如果你希望项目中所有的选择器都使用一样的样式，可以初始化自定义参数
-    /// 如果你希望有别个的选择器使用不同的样式，可以在调用选择器函数的时候，通过传参实现
-    StringBuffer _buffer = StringBuffer();
-    for (SelectorItem selectorItem in _selectorItems) {
-      _buffer.write(selectorItem.toString() + '\n');
-    }
-    StringBuffer _bufferLink = StringBuffer();
-    for (SelectorItem selectorItem in _selectorItemsLink) {
-      _bufferLink.write(selectorItem.toString() + '\n');
-    }
-    StringBuffer _bufferMultipleChoice = StringBuffer();
-    for (SelectorItem selectorItem in _selectorItemsMultipleChoice) {
-      if (selectorItem.check) {
-        if (selectorItem.id.isNotEmpty) {
-          _bufferMultipleChoice.write(selectorItem.toString() + '\n');
-        }
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SingleChildScrollView(
+      body: body(),
+    );
+  }
+
+  Widget body() {
+    /// Supports linked and non-linked selectors
+    /// If you want all selectors in the project to use the same style, you can initialize custom parameters
+    /// If you want other selectors to use different styles, you can pass parameters when calling the selector function
+    StringBuffer buffer = StringBuffer();
+    for (SelectorItem selectorItem in _selectorItems) {
+      if (buffer.isEmpty) {
+        buffer.write(selectorItem.name);
+      } else {
+        buffer.write('\n' + selectorItem.name);
+      }
+    }
+    StringBuffer bufferLink = StringBuffer();
+    for (SelectorItem selectorItem in _selectorItemsLink) {
+      if (bufferLink.isEmpty) {
+        bufferLink.write(selectorItem.name);
+      } else {
+        bufferLink.write('\n' + selectorItem.name);
+      }
+    }
+    StringBuffer bufferMultipleChoice = StringBuffer();
+    for (SelectorItem selectorItem in _selectorItemsMultipleChoice) {
+      if (selectorItem.check) {
+        if (selectorItem.id.isNotEmpty) {
+          if (bufferMultipleChoice.isEmpty) {
+            bufferMultipleChoice.write(selectorItem.name);
+          } else {
+            bufferMultipleChoice.write('\n' + selectorItem.name);
+          }
+        }
+      }
+    }
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(width: MediaQuery.of(context).size.width, height: 20),
+            const SizedBox(height: 16),
             TextButton(
                 onPressed: _singleSelector, child: const Text('点击选择器(单)')),
-            Text('${_selectorItem ?? ''}'),
-            const SizedBox(height: 20),
+            Text(_selectorItem?.name ?? ''),
+            const SizedBox(height: 16),
             TextButton(
                 onPressed: _doubleSelector, child: const Text('点击选择器(双)')),
-            Text('${_selectorItemLeft ?? ''}  ${_selectorItemRight ?? ''}'),
-            const SizedBox(height: 20),
+            Text(
+                '${_selectorItemLeft?.name ?? ''}  ${_selectorItemRight?.name ?? ''}'),
+            const SizedBox(height: 16),
             TextButton(
                 onPressed: _multipleSelector, child: const Text('点击选择器(多)')),
-            Text(_buffer.toString()),
-            const SizedBox(height: 20),
+            Text(buffer.toString()),
+            const SizedBox(height: 16),
             TextButton(
                 onPressed: _multipleLinkSelector,
                 child: const Text('点击选择器(多，支持联动)')),
-            Text(_bufferLink.toString()),
-            const SizedBox(height: 20),
+            Text(bufferLink.toString()),
+            const SizedBox(height: 16),
             TextButton(
                 onPressed: _multipleChoiceSelector,
                 child: const Text('点击选择器(单，条件多选)')),
-            Text(_bufferMultipleChoice.toString()),
+            Text(bufferMultipleChoice.toString()),
           ],
         ),
       ),
     );
   }
 
-  /// *************************  单选择器 *************************///
+  /// ************************* Single Selector ************************* ///
   int _position = 0;
   SelectorItem? _selectorItem;
 
@@ -116,14 +138,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// *************************  双选择器 *************************///
+  /// ************************* Double selector ************************* ///
   int? _positionLeft = 0;
   SelectorItem? _selectorItemLeft;
   int? _positionRight = 0;
   SelectorItem? _selectorItemRight;
 
   void _doubleSelector() {
-    // 支持隐藏二级项
     Selector.showDoubleSelector(context,
         listLeft: getDoubleData()[0],
         listRight: getDoubleData()[1],
@@ -138,13 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// *************************  多选择器 *************************///
+  /// ************************* Multiple Selectors ************************* ///
   List<int> _positions = [];
   List<SelectorItem> _selectorItems = [];
 
   void _multipleSelector() {
     Selector.showMultipleSelector(context,
         list: getMultipleData(),
+        textSize: 12,
         listPosition: _positions, callBack: (selectorItems, positions) {
       _positions = positions;
       _selectorItems = selectorItems;
@@ -152,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// *************************  多选择器(支持联动) *************************///
+  /// **************** Multiple selectors (support linkage)  **************** ///
 
   List<int> _positionsLink = [];
   List<SelectorItem> _selectorItemsLink = [];
@@ -160,6 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _multipleLinkSelector() {
     Selector.showMultipleLinkSelector(context,
         list: getMultipleLinkData(),
+        textSize: 12,
         listPosition: _positionsLink, callBack: (selectorItems, positions) {
       _positionsLink = positions;
       _selectorItemsLink = selectorItems;
@@ -167,13 +190,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// *************************  单选择器(条件多选) *************************///
+  /// *********** Single selector (conditional multiple selection) *********** ///
 
   List<SelectorItem> _selectorItemsMultipleChoice = [];
 
   void _multipleChoiceSelector() {
     Selector.showSingleMultipleChoiceSelector(context,
         list: _selectorItemsMultipleChoice,
+        textSize: 14,
         textColor: const Color(0xFF666666),
         selectColor: Colors.lightBlueAccent,
         describeColor: const Color(0xFF999999),
@@ -183,98 +207,104 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// *************************  测试数据 *************************///
+  /// ***************************** Test Data ***************************** ///
 
   List<SelectorItem> getSingleData() {
     List<SelectorItem> list = [];
-    for (int i = 0; i < 7; i++) {
-      list.add(SelectorItem(id: '${i + 1}', name: '星期${i + 1}'));
+    for (int i = 0; i < 9; i++) {
+      list.add(SelectorItem(id: '$i', name: '${(i + 1) * 1000} 元'));
     }
     return list;
   }
 
   List<List<SelectorItem>> getDoubleData() {
     List<SelectorItem> list1 = [];
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 10; i++) {
       if (i == 0) {
-        list1.add(
-            SelectorItem(id: '${i + 1}', name: '动物${i + 1}', hideNext: true));
+        list1.add(SelectorItem(id: '${i + 1}', name: '开放式', hideNext: true));
       } else {
-        list1.add(SelectorItem(id: '${i + 1}', name: '动物${i + 1}'));
+        list1.add(SelectorItem(id: '${i + 1}', name: '$i房'));
       }
     }
     List<SelectorItem> list2 = [];
-    for (int i = 0; i < 7; i++) {
-      list2.add(SelectorItem(id: '${i + 1}', name: '植物${i + 1}'));
+    for (int i = 0; i < 10; i++) {
+      list2.add(SelectorItem(id: '${i + 1}', name: '$i厅'));
     }
     return [list1, list2];
   }
 
   List<List<SelectorItem>> getMultipleData() {
+    const int count = 6;
     List<SelectorItem> list1 = [];
-    for (int i = 0; i < 7; i++) {
-      list1.add(SelectorItem(id: '${i + 1}', name: '金${i + 1}'));
+    for (int i = 0; i < count; i++) {
+      list1.add(SelectorItem(id: '${i + 1}', name: '供应商${i + 1}'));
     }
     List<SelectorItem> list2 = [];
-    for (int i = 0; i < 7; i++) {
-      list2.add(SelectorItem(id: '${i + 1}', name: '木${i + 1}'));
+    for (int i = 0; i < count; i++) {
+      list2.add(SelectorItem(id: '${i + 1}', name: '制造商${i + 1}'));
     }
     List<SelectorItem> list3 = [];
-    for (int i = 0; i < 7; i++) {
-      list3.add(SelectorItem(id: '${i + 1}', name: '水${i + 1}'));
+    for (int i = 0; i < count; i++) {
+      list3.add(SelectorItem(id: '${i + 1}', name: '分销商${i + 1}'));
     }
     List<SelectorItem> list4 = [];
-    for (int i = 0; i < 7; i++) {
-      list4.add(SelectorItem(id: '${i + 1}', name: '火${i + 1}'));
+    for (int i = 0; i < count; i++) {
+      list4.add(SelectorItem(id: '${i + 1}', name: '零售商${i + 1}'));
     }
     List<SelectorItem> list5 = [];
-    for (int i = 0; i < 7; i++) {
-      list5.add(SelectorItem(id: '${i + 1}', name: '土${i + 1}'));
+    for (int i = 0; i < count; i++) {
+      list5.add(SelectorItem(id: '${i + 1}', name: '消费者${i + 1}'));
     }
     return [list1, list2, list3, list4, list5];
   }
 
   List<SelectorItem> getMultipleLinkData() {
+    const int count = 6;
     List<SelectorItem> level1 = [];
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < count; i++) {
       List<SelectorItem> level2 = [];
-      for (int j = 0; j < 7; j++) {
+      for (int j = 0; j < count; j++) {
         List<SelectorItem> level3 = [];
-        for (int k = 0; k < 7; k++) {
+        for (int k = 0; k < count; k++) {
           List<SelectorItem> level4 = [];
-          for (int m = 0; m < 7; m++) {
-            SelectorItem selectorItem = SelectorItem(
-                id: '${m + 1}', name: '${i + 1}${j + 1}${k + 1}火${m + 1}');
+          for (int m = 0; m < count; m++) {
+            SelectorItem selectorItem =
+                SelectorItem(id: '${m + 1}', name: '零售商${m + 1}');
             level4.add(selectorItem);
           }
           SelectorItem selectorItem = SelectorItem(
-              id: '${k + 1}',
-              name: '${i + 1}${j + 1}水${k + 1}',
-              childList: level4);
+              id: '${k + 1}', name: '分销商${k + 1}', childList: level4);
           level3.add(selectorItem);
         }
         SelectorItem selectorItem = SelectorItem(
-            id: '${j + 1}', name: '${i + 1}木${j + 1}', childList: level3);
+            id: '${j + 1}', name: '制造商${j + 1}', childList: level3);
         level2.add(selectorItem);
       }
       SelectorItem selectorItem =
-          SelectorItem(id: '${i + 1}', name: '金${i + 1}', childList: level2);
+          SelectorItem(id: '${i + 1}', name: '供应商${i + 1}', childList: level2);
       level1.add(selectorItem);
     }
     return level1;
   }
 
   List<SelectorItem> getMultipleChoiceData() {
-    List<SelectorItem> list = [
-      SelectorItem(
-          id: '',
-          name: '全选',
-          isCheck: false,
-          isSupportSelectAll: true)
+    List data = [
+      {'id': '1', 'name': 'Nike', 'describe': '创新运动品牌，注重性能与时尚'},
+      {'id': '2', 'name': 'Adidas', 'describe': '三条纹标志，运动与休闲结合'},
+      {'id': '3', 'name': 'Zara', 'describe': '快时尚，迅速跟进潮流'},
+      {'id': '4', 'name': 'Gucci', 'describe': '奢华时尚，标志性双G'},
+      {'id': '5', 'name': 'Prada', 'describe': '意大利奢华，前卫设计'},
+      {'id': '6', 'name': 'Burberry', 'describe': '英伦经典，标志性格纹'},
+      {'id': '7', 'name': 'Versace', 'describe': '大胆奢华设计，闪耀魅力'}
     ];
-    for (int i = 0; i < 7; i++) {
+
+    List<SelectorItem> list = [
+      SelectorItem(id: '', name: '全选', isCheck: false, isSupportSelectAll: true)
+    ];
+    for (int i = 0; i < data.length; i++) {
+      Map map = data[i];
       list.add(SelectorItem(
-          id: '${i + 1}', name: '星期${i + 1}', describe: '这是一条描述文案'));
+          id: map['id'], name: map['name'], describe: map['describe']));
     }
     return list;
   }
