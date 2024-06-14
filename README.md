@@ -27,7 +27,7 @@ This is a customizable Flutter selector that allows you to customize the interfa
 # Get started
 <a name="Iywln"></a>
 ## Install
-Add the flutter_drop_menu package to your [pubspec dependencies](https://pub.dev/packages/flutter_selector).
+Add the flutter_selector package to your [pubspec dependencies](https://pub.dev/packages/flutter_selector).
 <a name="FF3he"></a>
 ## Usage
 <a name="u5Vfp"></a>
